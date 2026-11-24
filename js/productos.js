@@ -8,92 +8,111 @@
  *  - id: número único del producto
  *  - nombre: nombre del cuadro
  *  - descripcion: descripción breve
- *  - categoria: "abstracto" | "minimalista" | "vintage" | "naturaleza" | "cine-musica" | "fotografia" | "tipografico" | "otros"
- *  - precio: precio en pesos argentinos (número)
- *  - medidas: array de strings con medidas disponibles
+ *  - categoria: "cine-musica" | "otros"
+ *  - variantes: array de objetos { medida, precio, tipo, coloresMarco }
  *  - imagen: ruta a la imagen (relativa a la raíz del proyecto)
  *  - disponible: true | false
+ *
+ * TIPOS DE MARCO:
+ *  - "plastico"   → 30x40 cm · $27.000 · Colores: rojo, azul, blanco, negro
+ *  - "enchapado"  → 40x50 cm · $35.000 · Colores: dorado, plateado
  */
+
+const VARIANTES = {
+  plastico: {
+    medida: "30x40 cm",
+    precio: 27000,
+    tipo: "Marco de plástico",
+    coloresMarco: ["Rojo", "Azul", "Blanco", "Negro"]
+  },
+  enchapado: {
+    medida: "40x50 cm",
+    precio: 35000,
+    tipo: "Marco enchapado",
+    coloresMarco: ["Dorado", "Plateado"]
+  }
+};
 
 const PRODUCTOS = [
   {
     id: 1,
-    nombre: "Geometría en Rojo",
-    descripcion: "Composición geométrica de alto impacto con formas dinámicas sobre fondo negro.",
-    categoria: "abstracto",
-    precio: 8500,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm"],
-    imagen: "img/producto_abstracto_1.png",
+    nombre: "Babasónicos",
+    descripcion: "Póster editorial en blanco y negro de la banda argentina Babasónicos. Tipografía bold con código Spotify integrado.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/Babasonicos_3.jpg",
     disponible: true
   },
   {
     id: 2,
-    nombre: "New York Typeset",
-    descripcion: "Diseño tipográfico editorial en blanco y negro. Ideal para ambientes modernos.",
-    categoria: "tipografico",
-    precio: 7200,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm", "60x80 cm"],
-    imagen: "img/producto_tipografico_1.png",
+    nombre: "Charly — Say No More",
+    descripcion: "Diseño neon de Charly García con estética urbana. Tipografía violeta y tono azul intenso. Edición especial.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/charly neon.jpg",
     disponible: true
   },
   {
     id: 3,
-    nombre: "Mountain Vista",
-    descripcion: "Lámina vintage de montaña con estética de parque nacional norteamericano.",
-    categoria: "vintage",
-    precio: 9000,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm"],
-    imagen: "img/producto_vintage_1.png",
+    nombre: "Eminem",
+    descripcion: "Póster icónico de Eminem en blanco y negro con marco rojo. Tipografía espejada característica del artista.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/eminem.png",
     disponible: true
   },
   {
     id: 4,
-    nombre: "Botanica Verde",
-    descripcion: "Ilustración botánica minimalista con hojas tropicales en tinta sobre fondo crema.",
-    categoria: "naturaleza",
-    precio: 7800,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm"],
-    imagen: "img/producto_naturaleza_1.png",
+    nombre: "Freezer — The End of Namek",
+    descripcion: "Lámina estilo vintage de Dragon Ball Z. La épica batalla en el Planeta Namek. Arte de colección para fanáticos.",
+    categoria: "otros",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/feezer cabeza.jpg",
     disponible: true
   },
   {
     id: 5,
-    nombre: "Frame by Frame",
-    descripcion: "Homenaje al cine clásico. Diseño minimalista con cámara cinematográfica vintage.",
-    categoria: "cine-musica",
-    precio: 8200,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm"],
-    imagen: "img/producto_cine_1.png",
+    nombre: "Gohan SSJ2",
+    descripcion: "Arte digital de Gohan Super Saiyan 2 en su mítica transformación. Colores intensos y composición dinámica.",
+    categoria: "otros",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/gohan enojado.jpg",
     disponible: true
   },
   {
     id: 6,
-    nombre: "Niebla y Luz",
-    descripcion: "Fotografía artística en blanco y negro de bosque brumoso con rayos de luz.",
-    categoria: "fotografia",
-    precio: 10500,
-    medidas: ["40x50 cm", "50x70 cm", "60x80 cm", "70x100 cm"],
-    imagen: "img/producto_foto_1.png",
+    nombre: "Haunter #093",
+    descripcion: "Póster estilo manga japonés del Pokémon Haunter. Diseño retro con tipografía bold y paleta violeta y rosa.",
+    categoria: "otros",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/hunter.jpg",
     disponible: true
   },
   {
     id: 7,
-    nombre: "Círculo Zen",
-    descripcion: "Composición ultra minimalista. Un solo círculo perfecto sobre fondo blanco.",
-    categoria: "minimalista",
-    precio: 6500,
-    medidas: ["30x30 cm", "40x40 cm", "50x50 cm"],
-    imagen: "img/producto_minimalista_demo.png",
+    nombre: "Michael Jackson — White Edition",
+    descripcion: "Diseño editorial minimalista de Michael Jackson en traje blanco. Gran tipografía sobre fondo claro. Elegante.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/michael jackson blancoo.jpg",
     disponible: true
   },
   {
     id: 8,
-    nombre: "Abstract Shapes II",
-    descripcion: "Serie abstracta con formas orgánicas y paleta de colores contemporánea.",
-    categoria: "abstracto",
-    precio: 8800,
-    medidas: ["30x40 cm", "40x50 cm", "50x70 cm"],
-    imagen: "img/producto_abstracto_1.png",
+    nombre: "King of Pop — Red Edition",
+    descripcion: "Póster de Michael Jackson estilo afiche clásico. Fondo rojo impactante con silueta icónica. King of Pop.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/michael rojoo.jpg",
+    disponible: true
+  },
+  {
+    id: 9,
+    nombre: "Luca Prodan",
+    descripcion: "Homenaje a Luca Prodan y Sumo con estética rockera en rojo, blanco y negro.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/Luca Prodan.png",
     disponible: true
   }
 ];
