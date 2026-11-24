@@ -1923,6 +1923,18 @@ ul {
    RESPONSIVE — MÓVIL
    ============================================ */
 @media (max-width: 640px) {
+  .variante-header {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .variante-tipo {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .producto-dialog {
     display: block;
     overflow-y: auto;
