@@ -669,6 +669,8 @@ ul {
 
 /* --- Tarjeta de Producto --- */
 .producto-card {
+  display: flex;
+  flex-direction: column;
   background: var(--blanco);
   border: 1px solid var(--gris-medio);
   border-radius: var(--border-radius-lg);
@@ -1079,9 +1081,17 @@ ul {
   overflow-wrap: anywhere;
 }
 
+.personalizado-cta-movil {
+  display: none;
+}
+
 .personalizado-card .personalizado-nota {
-  padding: 0 12px 12px;
+  margin-top: 8px;
   text-align: center;
+}
+
+.producto-cta-movil {
+  display: none;
 }
 
 .producto-imagen-wrap {
@@ -1153,6 +1163,7 @@ ul {
 
 .producto-info {
   padding: 16px;
+  flex: 1;
 }
 
 .producto-categoria {
@@ -2031,6 +2042,40 @@ ul {
 
   .producto-info {
     padding: 12px;
+  }
+
+  .producto-footer {
+    margin-top: auto;
+  }
+
+  .btn-whatsapp-full {
+    min-height: 42px;
+    padding: 9px 8px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .producto-cta-completo {
+    display: none;
+  }
+
+  .producto-cta-movil {
+    display: inline;
+  }
+
+  .personalizado-card .personalizado-consulta {
+    min-height: 42px;
+    flex-wrap: nowrap;
+    padding: 9px 8px;
+    white-space: nowrap;
+  }
+
+  .personalizado-cta-completo {
+    display: none;
+  }
+
+  .personalizado-cta-movil {
+    display: inline;
   }
 
   .producto-footer {
