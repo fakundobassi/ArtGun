@@ -1934,6 +1934,18 @@ ul {
    RESPONSIVE — MÓVIL
    ============================================ */
 @media (max-width: 640px) {
+  .producto-badge {
+    top: 8px;
+    left: 8px;
+    max-width: calc(100% - 16px);
+    padding: 3px 7px;
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .variante-header {
     flex-wrap: wrap;
     justify-content: flex-start;
