@@ -1800,13 +1800,18 @@ ul {
    ============================================ */
 @media (max-width: 1024px) {
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     min-height: auto;
   }
 
   .hero-content {
     padding: 100px 40px 60px;
     text-align: center;
+    min-width: 0;
+  }
+
+  .hero-image-col {
+    min-width: 0;
   }
 
   .hero-eyebrow,
@@ -1865,7 +1870,7 @@ ul {
   }
 
   .contacto-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 48px;
   }
 
@@ -2032,7 +2037,7 @@ ul {
   }
 
   .hero-titulo {
-    font-size: 60px;
+    font-size: clamp(44px, 15vw, 60px);
   }
 
   .hero-actions {
@@ -2041,6 +2046,17 @@ ul {
 
   .hero-actions .btn {
     width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .contacto-redes {
+    flex-wrap: wrap;
+  }
+
+  .red-social-btn {
+    padding-right: 12px;
+    padding-left: 12px;
   }
 
   .stats-grid {
@@ -2108,6 +2124,12 @@ ul {
 
   .contacto-acciones {
     padding: 32px 24px;
+  }
+
+  .contacto-acciones .btn {
+    max-width: 100%;
+    padding: 14px 16px;
+    white-space: normal;
   }
 
   .footer-grid {
