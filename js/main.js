@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const productoDialogConsulta = document.getElementById('productoDialogConsulta');
   const productoDialogCerrar = productoDialog.querySelector('.producto-dialog-cerrar');
   let tarjetaActiva;
+  let scrollAnterior = 0;
+  let estilosBodyAntesDelDialog;
 
   // Íconos de colores para los marcos
   const COLOR_ICONS = {
@@ -171,6 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function abrirDetalleProducto(producto, tarjeta) {
     tarjetaActiva = tarjeta;
     tarjetaActiva.setAttribute('aria-expanded', 'true');
+    scrollAnterior = window.scrollY;
+    estilosBodyAntesDelDialog = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow,
+      scrollBehavior: document.documentElement.style.scrollBehavior
+    };
     productoDialogImagen.src = producto.imagen;
     productoDialogImagen.alt = producto.nombre;
     productoDialogCategoria.textContent = CATEGORIAS_LABELS[producto.categoria] || producto.categoria;
@@ -192,6 +202,10 @@ document.addEventListener('DOMContentLoaded', () => {
     productoDialogConsulta.href = `https://wa.me/5492345683912?text=${encodeURIComponent(
       `Hola ARTGUN! Quisiera consultar por el cuadro "${producto.nombre}" y sus tamaños y marcos disponibles.`
     )}`;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollAnterior}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
     productoDialog.showModal();
     productoDialogCerrar.focus();
   }
@@ -225,10 +239,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === productoDialog) productoDialog.close();
   });
   productoDialog.addEventListener('close', () => {
-    if (tarjetaActiva && tarjetaActiva.isConnected) {
-      tarjetaActiva.setAttribute('aria-expanded', 'false');
-      tarjetaActiva.focus();
+    const estilosRestaurados = estilosBodyAntesDelDialog;
+    if (estilosRestaurados) {
+      document.body.style.position = estilosRestaurados.position;
+      document.body.style.top = estilosRestaurados.top;
+      document.body.style.width = estilosRestaurados.width;
+      document.body.style.overflow = estilosRestaurados.overflow;
+      document.documentElement.style.scrollBehavior = 'auto';
     }
+
+    window.requestAnimationFrame(() => {
+      window.scrollTo(0, scrollAnterior);
+      if (estilosRestaurados) {
+        document.documentElement.style.scrollBehavior = estilosRestaurados.scrollBehavior;
+        estilosBodyAntesDelDialog = null;
+      }
+      if (tarjetaActiva && tarjetaActiva.isConnected) {
+        tarjetaActiva.setAttribute('aria-expanded', 'false');
+        tarjetaActiva.focus({ preventScroll: true });
+      }
+    });
   });
 
   function crearTarjetaPersonalizada() {
