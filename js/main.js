@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const CATEGORIAS_LABELS = {
     'cine-musica': 'Música',
-    'otros':       'Anime & Pop Culture'
+    'otros':       'Anime & Pop Culture',
+    'deportes':    'Deportes'
   };
   const productoDialog = document.getElementById('productoDialog');
   const productoDialogImagen = document.getElementById('productoDialogImagen');

@@ -114,5 +114,32 @@ const PRODUCTOS = [
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
     imagen: "img/productos/Luca Prodan.png",
     disponible: true
+  },
+  {
+    id: 10,
+    nombre: "Bad Bunny — DeBÍ TiRAR MáS FOToS",
+    descripcion: "Póster inspirado en DeBÍ TiRAR MáS FOToS, con composición fotográfica y paleta verde.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/Bad_Bunny_DeBi_Tirar_Mas_Fotos_3.png",
+    disponible: true
+  },
+  {
+    id: 11,
+    nombre: "Messi — La Tribuna",
+    descripcion: "Lionel Messi en el campo de juego, frente a una tribuna celeste y blanca.",
+    categoria: "deportes",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/messi tribuna 3.jpg",
+    disponible: true
+  },
+  {
+    id: 12,
+    nombre: "Michael Jackson — Gold Edition",
+    descripcion: "Homenaje a Michael Jackson con estética de concierto y detalles dorados.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagen: "img/productos/michael gold mockup.jpg",
+    disponible: true
   }
 ];
