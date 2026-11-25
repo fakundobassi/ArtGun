@@ -831,8 +831,8 @@ ul {
   gap: 5px;
 }
 
-.producto-dialog-variante-info > strong {
-  font-size: 15px;
+.producto-dialog-variante-info > .variante-select {
+  justify-self: start;
 }
 
 .producto-dialog-variante-info > span,
@@ -1228,6 +1228,30 @@ ul {
   margin-bottom: 7px;
 }
 
+.variante-select {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.variante-select:focus-visible,
+.color-pastilla:focus-visible,
+.personalizado-medida:focus-visible {
+  outline: 2px solid var(--rojo);
+  outline-offset: 3px;
+}
+
+.variante-select[aria-pressed="true"] .variante-medida {
+  color: var(--rojo);
+}
+
 .variante-medida {
   font-size: 13px;
   font-weight: 800;
@@ -1268,17 +1292,35 @@ ul {
 }
 
 .color-pastilla {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
   border-radius: 50%;
-  cursor: default;
-  transition: transform 0.2s ease;
+  appearance: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
+.color-pastilla[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--blanco), 0 0 0 4px var(--negro);
+}
+
 .color-pastilla:hover {
-  transform: scale(1.25);
+  transform: scale(1.12);
+}
+
+.personalizado-medida {
+  cursor: pointer;
+}
+
+.producto-dialog-variante .variante-colores {
+  flex-wrap: wrap;
+}
+
+.producto-dialog-variante .producto-dialog-color {
+  flex: 0 0 26px;
 }
 
 .variante-info {

@@ -73,25 +73,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }).format(precio);
   }
 
-  function crearPastillasColor(colores) {
+  function crearPastillasColor(colores, colorSeleccionado, clase = '') {
     return colores.map(color => {
       const hex = COLOR_ICONS[color] || '#ccc';
       const borde = color === 'Blanco' ? 'border:1.5px solid #ccc;' : 'border:1.5px solid transparent;';
-      return `<span class="color-pastilla" title="${color}" style="background:${hex};${borde}" aria-label="Color ${color}"></span>`;
+      return `
+        <button
+          class="color-pastilla ${clase}"
+          type="button"
+          data-select-color="${color}"
+          title="${color}"
+          style="background:${hex};${borde}"
+          aria-label="Elegir marco ${color}"
+          aria-pressed="${color === colorSeleccionado}"
+        ></button>
+      `;
     }).join('');
   }
 
-  function crearVariantesHTML(variantes) {
+  function crearVariantesHTML(variantes, varianteSeleccionada = 0, colorSeleccionado = variantes[0].coloresMarco[0]) {
     return variantes.map((v, i) => `
-      <div class="variante-item${i === 0 ? ' variante-activa' : ''}" data-idx="${i}">
+      <div class="variante-item${i === varianteSeleccionada ? ' variante-activa' : ''}" data-idx="${i}">
         <div class="variante-info">
           <div class="variante-header">
-            <span class="variante-medida">${v.medida}</span>
+            <button
+              class="variante-select"
+              type="button"
+              data-select-variant="${i}"
+              aria-pressed="${i === varianteSeleccionada}"
+            >
+              <span class="variante-medida">${v.medida}</span>
+            </button>
             <span class="variante-tipo">${v.tipo}</span>
           </div>
           <div class="variante-colores">
             <span class="variante-colores-label">Colores:</span>
-            <div class="colores-wrap">${crearPastillasColor(v.coloresMarco)}</div>
+            <div class="colores-wrap">${crearPastillasColor(v.coloresMarco, i === varianteSeleccionada ? colorSeleccionado : '')}</div>
           </div>
         </div>
         <div class="variante-precio">${formatPrecio(v.precio)}</div>
@@ -99,18 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
+  function crearUrlPedido(producto, variante, color) {
+    const mensaje = `Hola ARTGUN! Quiero pedir "${producto.nombre}" en tamaño ${variante.medida}, con ${variante.tipo.toLowerCase()} color ${color}, por ${formatPrecio(variante.precio)}.`;
+    return `https://wa.me/5492345683912?text=${encodeURIComponent(mensaje)}`;
+  }
+
   function crearTarjetaProducto(producto) {
     const variantePrimaria = producto.variantes[0];
-
-    const mensajeWA = encodeURIComponent(
-      `Hola ARTGUN! Quisiera consultar por el cuadro "${producto.nombre}". ¿Podrían pasarme más información y disponibilidad?`
-    );
-    const urlWA = `https://wa.me/5492345683912?text=${mensajeWA}`;
+    const colorInicial = variantePrimaria.coloresMarco[0];
+    const urlWA = crearUrlPedido(producto, variantePrimaria, colorInicial);
 
     return `
       <article
         class="producto-card fade-in"
         data-id="${producto.id}"
+        data-variante-seleccionada="0"
+        data-color-seleccionado="${colorInicial}"
         tabindex="0"
         aria-label="Ver detalles de ${producto.nombre}"
         aria-haspopup="dialog"
@@ -141,13 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <!-- Variantes de tamaño y marco -->
           <div class="variantes-wrap">
-            ${crearVariantesHTML(producto.variantes)}
+            ${crearVariantesHTML(producto.variantes, 0, colorInicial)}
           </div>
         </div>
 
         <div class="producto-footer">
           <div class="producto-precio">
-            <span class="desde">Desde</span>
+            <span class="desde">Elegido</span>
             ${formatPrecio(variantePrimaria.precio)}
           </div>
         </div>
@@ -156,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
           href="${urlWA}"
           target="_blank"
           rel="noopener noreferrer"
-          class="btn btn-whatsapp btn-whatsapp-full"
+          class="btn btn-whatsapp btn-whatsapp-full producto-pedir"
           aria-label="Consultar por WhatsApp — ${producto.nombre}"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -170,9 +191,84 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  function actualizarSeleccionProducto(contenedor, producto, indiceVariante, color) {
+    const variante = producto.variantes[indiceVariante];
+    if (!variante || !variante.coloresMarco.includes(color)) return;
+
+    contenedor.dataset.varianteSeleccionada = String(indiceVariante);
+    contenedor.dataset.colorSeleccionado = color;
+
+    contenedor.querySelectorAll('.variante-item').forEach((fila, indice) => {
+      const activa = indice === indiceVariante;
+      fila.classList.toggle('variante-activa', activa);
+      fila.querySelector('[data-select-variant]').setAttribute('aria-pressed', String(activa));
+      fila.querySelectorAll('[data-select-color]').forEach(boton => {
+        boton.setAttribute('aria-pressed', String(activa && boton.dataset.selectColor === color));
+      });
+    });
+
+    const precio = contenedor.querySelector('.producto-precio');
+    if (precio) precio.innerHTML = `<span class="desde">Elegido</span>${formatPrecio(variante.precio)}`;
+
+    const enlace = contenedor.querySelector('.producto-pedir');
+    if (enlace) {
+      enlace.href = crearUrlPedido(producto, variante, color);
+      enlace.setAttribute('aria-label', `Pedir por WhatsApp — ${producto.nombre}, ${variante.medida}, marco ${color}`);
+    }
+  }
+
+  function crearVariantesDialogHTML(variantes, indiceSeleccionado, colorSeleccionado) {
+    return variantes.map((variante, indice) => `
+      <div class="producto-dialog-variante variante-item${indice === indiceSeleccionado ? ' variante-activa' : ''}" data-idx="${indice}">
+        <div class="producto-dialog-variante-info">
+          <button
+            class="variante-select"
+            type="button"
+            data-select-variant="${indice}"
+            aria-pressed="${indice === indiceSeleccionado}"
+          >
+            <span class="variante-medida">${variante.medida}</span>
+          </button>
+          <span>${variante.tipo}</span>
+          <div class="producto-dialog-colores variante-colores">
+            <span>Colores:</span>
+            <div class="colores-wrap">
+              ${crearPastillasColor(variante.coloresMarco, indice === indiceSeleccionado ? colorSeleccionado : '', 'producto-dialog-color')}
+            </div>
+          </div>
+        </div>
+        <strong class="producto-dialog-precio">${formatPrecio(variante.precio)}</strong>
+      </div>
+    `).join('');
+  }
+
+  function actualizarSeleccionDialog(producto, indiceVariante, color) {
+    const variante = producto.variantes[indiceVariante];
+    if (!variante || !variante.coloresMarco.includes(color)) return;
+
+    productoDialog.dataset.varianteSeleccionada = String(indiceVariante);
+    productoDialog.dataset.colorSeleccionado = color;
+    productoDialogVariantes.querySelectorAll('.variante-item').forEach((fila, indice) => {
+      const activa = indice === indiceVariante;
+      fila.classList.toggle('variante-activa', activa);
+      fila.querySelector('[data-select-variant]').setAttribute('aria-pressed', String(activa));
+      fila.querySelectorAll('[data-select-color]').forEach(boton => {
+        boton.setAttribute('aria-pressed', String(activa && boton.dataset.selectColor === color));
+      });
+    });
+
+    productoDialogConsulta.href = crearUrlPedido(producto, variante, color);
+    productoDialogConsulta.setAttribute('aria-label', `Pedir por WhatsApp — ${producto.nombre}, ${variante.medida}, marco ${color}`);
+  }
+
   function abrirDetalleProducto(producto, tarjeta) {
     tarjetaActiva = tarjeta;
     tarjetaActiva.setAttribute('aria-expanded', 'true');
+    const indiceVariante = Number(tarjeta.dataset.varianteSeleccionada || 0);
+    const variante = producto.variantes[indiceVariante];
+    const color = variante.coloresMarco.includes(tarjeta.dataset.colorSeleccionado)
+      ? tarjeta.dataset.colorSeleccionado
+      : variante.coloresMarco[0];
     scrollAnterior = window.scrollY;
     estilosBodyAntesDelDialog = {
       position: document.body.style.position,
@@ -186,22 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
     productoDialogCategoria.textContent = CATEGORIAS_LABELS[producto.categoria] || producto.categoria;
     productoDialogTitulo.textContent = producto.nombre;
     productoDialogDescripcion.textContent = producto.descripcion;
-    productoDialogVariantes.innerHTML = producto.variantes.map(variante => `
-      <div class="producto-dialog-variante">
-        <div class="producto-dialog-variante-info">
-          <strong>${variante.medida}</strong>
-          <span>${variante.tipo}</span>
-          <div class="producto-dialog-colores">
-            <span>Colores:</span>
-            ${crearPastillasColor(variante.coloresMarco)}
-          </div>
-        </div>
-        <strong class="producto-dialog-precio">${formatPrecio(variante.precio)}</strong>
-      </div>
-    `).join('');
-    productoDialogConsulta.href = `https://wa.me/5492345683912?text=${encodeURIComponent(
-      `Hola ARTGUN! Quisiera consultar por el cuadro "${producto.nombre}" y sus tamaños y marcos disponibles.`
-    )}`;
+    productoDialogVariantes.innerHTML = crearVariantesDialogHTML(producto.variantes, indiceVariante, color);
+    actualizarSeleccionDialog(producto, indiceVariante, color);
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollAnterior}px`;
     document.body.style.width = '100%';
@@ -212,9 +294,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   grid.addEventListener('click', event => {
     const tarjeta = event.target.closest('.producto-card[data-id]');
-    if (!tarjeta || event.target.closest('a, button, input, select, label')) return;
+    if (!tarjeta) return;
 
     const producto = PRODUCTOS.find(item => String(item.id) === tarjeta.dataset.id);
+    const filaVariante = event.target.closest('.variante-item');
+    const botonSeleccion = event.target.closest('[data-select-variant], [data-select-color]');
+    if (producto && filaVariante) {
+      const indiceVariante = Number(filaVariante.dataset.idx);
+      const variante = producto.variantes[indiceVariante];
+      const color = botonSeleccion && botonSeleccion.hasAttribute('data-select-color')
+        ? botonSeleccion.dataset.selectColor
+        : (variante.coloresMarco.includes(tarjeta.dataset.colorSeleccionado)
+          ? tarjeta.dataset.colorSeleccionado
+          : variante.coloresMarco[0]);
+      actualizarSeleccionProducto(tarjeta, producto, indiceVariante, color);
+      event.stopPropagation();
+      return;
+    }
+
+    if (event.target.closest('a, button, input, select, label')) return;
     if (producto) abrirDetalleProducto(producto, tarjeta);
   });
 
@@ -229,6 +327,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   productoDialogCerrar.addEventListener('click', () => productoDialog.close());
+  productoDialogVariantes.addEventListener('click', event => {
+    const boton = event.target.closest('[data-select-variant], [data-select-color]');
+    const fila = event.target.closest('.variante-item');
+    if (!fila) return;
+
+    const colorActual = productoDialog.dataset.colorSeleccionado;
+    const producto = PRODUCTOS.find(item => String(item.id) === tarjetaActiva.dataset.id);
+    const indiceVariante = Number(fila.dataset.idx);
+    const variante = producto.variantes[indiceVariante];
+    const color = boton && boton.hasAttribute('data-select-color')
+      ? boton.dataset.selectColor
+      : (variante.coloresMarco.includes(colorActual) ? colorActual : variante.coloresMarco[0]);
+
+    actualizarSeleccionProducto(tarjetaActiva, producto, indiceVariante, color);
+    actualizarSeleccionDialog(producto, indiceVariante, color);
+  });
   productoDialog.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
       event.preventDefault();
@@ -314,6 +428,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <label class="personalizado-medida-label" for="personalizadoMedida">Tamaño y marco</label>
           <select class="personalizado-medida" id="personalizadoMedida">${opciones}</select>
+          <label class="personalizado-medida-label" for="personalizadoColor">Color del marco</label>
+          <select class="personalizado-medida" id="personalizadoColor">
+            ${VARIANTES.plastico.coloresMarco.map(color => `<option value="${color}">${color}</option>`).join('')}
+          </select>
           <p class="personalizado-nota">Al abrir WhatsApp, adjuntá allí la imagen para enviárnosla.</p>
         </div>
 
@@ -342,8 +460,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const placeholder = tarjeta.querySelector('.personalizado-placeholder');
     const nombreArchivo = tarjeta.querySelector('.personalizado-archivo');
     const enlace = tarjeta.querySelector('.personalizado-consulta');
-    const medida = tarjeta.querySelector('.personalizado-medida').value;
+    const selectorMedida = tarjeta.querySelector('#personalizadoMedida');
+    const selectorColor = tarjeta.querySelector('#personalizadoColor');
+    const medida = selectorMedida.value;
+    const variante = VARIANTES[medida];
+    const colorAnterior = selectorColor.value;
+    selectorColor.replaceChildren(...variante.coloresMarco.map(color => {
+      const opcion = document.createElement('option');
+      opcion.value = color;
+      opcion.textContent = color;
+      return opcion;
+    }));
+    selectorColor.value = variante.coloresMarco.includes(colorAnterior)
+      ? colorAnterior
+      : variante.coloresMarco[0];
+    const color = selectorColor.value;
     const estado = tarjeta.querySelector('.personalizado-estado');
+
+    tarjeta.querySelector('.personalizado-cuadro').style.borderColor = COLOR_ICONS[color];
 
     if (imagenPersonalizada && urlImagenPersonalizada) {
       preview.src = urlImagenPersonalizada;
@@ -352,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nombreArchivo.textContent = imagenPersonalizada.name;
       nombreArchivo.hidden = false;
       enlace.href = `https://wa.me/5492345683912?text=${encodeURIComponent(
-        `Hola ARTGUN! Quiero consultar por un cuadro personalizado con mi imagen. Elegí ${VARIANTES[medida].medida}, ${VARIANTES[medida].tipo} (${formatPrecio(VARIANTES[medida].precio)}). Voy a adjuntar la imagen en este chat.`
+        `Hola ARTGUN! Quiero pedir un cuadro personalizado con mi imagen. Elegí ${variante.medida}, ${variante.tipo}, marco color ${color} (${formatPrecio(variante.precio)}). Voy a adjuntar la imagen en este chat.`
       )}`;
       enlace.classList.remove('personalizado-consulta-inactiva');
       estado.textContent = 'Vista previa lista. Tu imagen no se envía automáticamente.';
@@ -401,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
       actualizarTarjetaPersonalizada();
     }
 
-    if (event.target.id === 'personalizadoMedida') {
+    if (event.target.id === 'personalizadoMedida' || event.target.id === 'personalizadoColor') {
       actualizarTarjetaPersonalizada();
     }
   });
