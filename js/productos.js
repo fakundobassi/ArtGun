@@ -42,6 +42,7 @@ const PRODUCTOS = [
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
     imagenPrincipal: "img/productos/Babasonicos_3.jpg",
+    imagenSecundaria: "img/productos/Babasonicos_1.jpg",
     disponible: true
   },
   {
@@ -211,6 +212,56 @@ const PRODUCTOS = [
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
     imagenPrincipal: "img/productos/Peron_Evita_La_Patria_Es_El_Otro_3.jpg",
     imagenSecundaria: "img/productos/Peron_Evita_La_Patria_Es_El_Otro_.jpg",
+    disponible: true
+  },
+  {
+    id: 19,
+    nombre: "Bad Bunny — Benito",
+    descripcion: "Póster de Bad Bunny con la frase «The only thing more powerful than hate is love» y la bandera de Puerto Rico.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/bad bunny benito.jpg",
+    imagenSecundaria: "img/productos/bad bunny benito 2.jpg",
+    disponible: true
+  },
+  {
+    id: 20,
+    nombre: "La Bombonera",
+    descripcion: "Lámina ilustrada del estadio Alberto J. Armando, ícono del fútbol y de la ciudad de Buenos Aires.",
+    categoria: "deportes",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/La_Bombonera_3.jpg",
+    imagenSecundaria: "img/productos/La_Bombonera_1.png",
+    disponible: true
+  },
+  {
+    id: 21,
+    nombre: "Lionel Messi — Ídolo",
+    descripcion: "Póster homenaje a Lionel Messi y su historia con la Selección Argentina.",
+    categoria: "deportes",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/messi poster 3.jpg",
+    imagenSecundaria: "img/productos/messi poster.jpg",
+    disponible: true
+  },
+  {
+    id: 22,
+    nombre: "Babasónicos — Disco",
+    descripcion: "Póster editorial dedicado a Babasónicos, con retratos de la banda y diseño inspirado en un disco.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/babasonicos disco 3.jpg",
+    imagenSecundaria: "img/productos/babasonicos disco 1.jpg",
+    disponible: true
+  },
+  {
+    id: 23,
+    nombre: "Cristina Fernández de Kirchner",
+    descripcion: "Lámina homenaje a Cristina Fernández de Kirchner con retrato y estética celeste y blanca.",
+    categoria: "politica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/Cristina_Fernandez_de_Kirchner_3.jpg",
+    imagenSecundaria: "img/productos/Cristina_Fernandez_de_Kirchner_1.jpg",
     disponible: true
   }
 ];

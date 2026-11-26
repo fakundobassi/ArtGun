@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const productoDialogDescripcion = document.getElementById('productoDialogDescripcion');
   const productoDialogVariantes = document.getElementById('productoDialogVariantes');
   const productoDialogConsulta = document.getElementById('productoDialogConsulta');
+  const productoDialogCopiar = document.getElementById('productoDialogCopiar');
+  const productoDialogEnlace = document.getElementById('productoDialogEnlace');
+  const productoDialogCompartirEstado = document.getElementById('productoDialogCompartirEstado');
   const productoDialogCerrar = productoDialog.querySelector('.producto-dialog-cerrar');
   let tarjetaActiva;
   let scrollAnterior = 0;
@@ -146,6 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
     productoDialogNavegacion.forEach(boton => {
       boton.hidden = imagenes.length < 2;
     });
+  }
+
+  function crearEnlaceProducto(producto) {
+    const url = new URL(window.location.href);
+    url.hash = `producto-${producto.id}`;
+    return url.href;
   }
 
   function crearTarjetaProducto(producto) {
@@ -315,6 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function abrirDetalleProducto(producto, tarjeta) {
     tarjetaActiva = tarjeta;
     tarjetaActiva.setAttribute('aria-expanded', 'true');
+    const url = new URL(window.location.href);
+    url.hash = `producto-${producto.id}`;
+    window.history.replaceState(window.history.state, '', url);
+    productoDialogCompartirEstado.textContent = '';
+    productoDialogEnlace.hidden = true;
     const indiceVariante = Number(tarjeta.dataset.varianteSeleccionada || 0);
     const variante = producto.variantes[indiceVariante];
     const color = variante.coloresMarco.includes(tarjeta.dataset.colorSeleccionado)
@@ -385,6 +399,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   productoDialogCerrar.addEventListener('click', () => productoDialog.close());
+  productoDialogCopiar.addEventListener('click', async () => {
+    const producto = PRODUCTOS.find(item => String(item.id) === tarjetaActiva.dataset.id);
+    if (!producto) {
+      productoDialogCompartirEstado.textContent = 'No se encontró el producto para compartir.';
+      return;
+    }
+
+    const enlace = crearEnlaceProducto(producto);
+    productoDialogEnlace.value = enlace;
+    productoDialogCompartirEstado.textContent = 'Copiando enlace...';
+
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        throw new Error('El portapapeles no está disponible en este contexto.');
+      }
+      await navigator.clipboard.writeText(enlace);
+      productoDialogEnlace.hidden = true;
+      productoDialogCompartirEstado.textContent = 'Enlace copiado. Al abrirlo se mostrará este producto.';
+    } catch {
+      productoDialogEnlace.hidden = false;
+      productoDialogEnlace.focus();
+      productoDialogEnlace.select();
+      productoDialogCompartirEstado.textContent = 'No se pudo copiar automáticamente. Seleccioná y copiá el enlace.';
+    }
+  });
   productoDialogNavegacion.forEach(boton => {
     boton.addEventListener('click', () => {
       const producto = PRODUCTOS.find(item => String(item.id) === tarjetaActiva.dataset.id);
@@ -419,6 +458,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target === productoDialog) productoDialog.close();
   });
   productoDialog.addEventListener('close', () => {
+    const enlaceActual = new URL(window.location.href);
+    if (tarjetaActiva && enlaceActual.hash === `#producto-${tarjetaActiva.dataset.id}`) {
+      enlaceActual.hash = '';
+      window.history.replaceState(window.history.state, '', enlaceActual);
+    }
+
     const estilosRestaurados = estilosBodyAntesDelDialog;
     if (estilosRestaurados) {
       document.body.style.position = estilosRestaurados.position;
@@ -698,6 +743,12 @@ document.addEventListener('DOMContentLoaded', () => {
      RENDERIZADO INICIAL
      ============================= */
   renderizarProductos();
+     const productoCompartido = window.location.hash.match(/^#producto-(\d+)$/);
+     if (productoCompartido) {
+       const producto = PRODUCTOS.find(item => String(item.id) === productoCompartido[1]);
+       const tarjeta = producto && grid.querySelector(`.producto-card[data-id="${producto.id}"]`);
+       if (producto && tarjeta) abrirDetalleProducto(producto, tarjeta);
+     }
 
   /* =============================
      NAVEGACIÓN SUAVE
