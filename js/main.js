@@ -205,14 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </svg>
           </button>
           <span class="producto-badge">${CATEGORIAS_LABELS[producto.categoria] || producto.categoria}</span>
-          <div class="producto-imagen-overlay">
-            <div class="overlay-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-              </svg>
-            </div>
-          </div>
         </div>
 
         <div class="producto-info">

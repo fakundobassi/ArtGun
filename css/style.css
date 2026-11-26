@@ -818,8 +818,25 @@ ul {
 
 .producto-imagen-wrap .producto-imagen-flecha {
   top: 50%;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--blanco);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65));
+  opacity: 0.78;
+}
+
+.producto-imagen-wrap .producto-imagen-flecha:hover {
+  background: transparent;
+  color: var(--blanco);
+  opacity: 1;
+}
+
+.producto-imagen-wrap .producto-imagen-flecha svg {
+  width: 26px;
+  height: 26px;
 }
 
 .producto-imagen-wrap .producto-imagen-flecha-anterior {
@@ -1221,37 +1238,6 @@ ul {
 
 .producto-badge-agotado {
   background: var(--gris-texto);
-}
-
-.producto-imagen-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.producto-card:hover .producto-imagen-overlay {
-  opacity: 1;
-}
-
-.overlay-icon {
-  width: 44px;
-  height: 44px;
-  background: var(--blanco);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: scale(0.7);
-  transition: transform 0.3s ease;
-}
-
-.producto-card:hover .overlay-icon {
-  transform: scale(1);
 }
 
 .producto-info {
