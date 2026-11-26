@@ -10,7 +10,8 @@
  *  - descripcion: descripción breve
  *  - categoria: "cine-musica" | "otros"
  *  - variantes: array de objetos { medida, precio, tipo, coloresMarco }
- *  - imagen: ruta a la imagen (relativa a la raíz del proyecto)
+ *  - imagenPrincipal: ruta a la imagen principal (relativa a la raíz)
+ *  - imagenSecundaria: ruta a una segunda imagen, si está disponible
  *  - disponible: true | false
  *
  * TIPOS DE MARCO:
@@ -40,7 +41,7 @@ const PRODUCTOS = [
     descripcion: "Póster editorial en blanco y negro de la banda argentina Babasónicos. Tipografía bold con código Spotify integrado.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/Babasonicos_3.jpg",
+    imagenPrincipal: "img/productos/Babasonicos_3.jpg",
     disponible: true
   },
   {
@@ -49,7 +50,8 @@ const PRODUCTOS = [
     descripcion: "Diseño neon de Charly García con estética urbana. Tipografía violeta y tono azul intenso. Edición especial.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/charly neon.jpg",
+    imagenPrincipal: "img/productos/charly neon 3.jpg",
+    imagenSecundaria: "img/productos/charly neon.png",
     disponible: true
   },
   {
@@ -58,7 +60,8 @@ const PRODUCTOS = [
     descripcion: "Póster icónico de Eminem en blanco y negro con marco rojo. Tipografía espejada característica del artista.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/eminem.png",
+    imagenPrincipal: "img/productos/eminem 3.png",
+    imagenSecundaria: "img/productos/Eminem.png",
     disponible: true
   },
   {
@@ -67,7 +70,8 @@ const PRODUCTOS = [
     descripcion: "Lámina estilo vintage de Dragon Ball Z. La épica batalla en el Planeta Namek. Arte de colección para fanáticos.",
     categoria: "otros",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/feezer cabeza.jpg",
+    imagenPrincipal: "img/productos/feezer cabeza 3.jpg",
+    imagenSecundaria: "img/productos/feezer cabeza.png",
     disponible: true
   },
   {
@@ -76,7 +80,8 @@ const PRODUCTOS = [
     descripcion: "Arte digital de Gohan Super Saiyan 2 en su mítica transformación. Colores intensos y composición dinámica.",
     categoria: "otros",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/gohan enojado.jpg",
+    imagenPrincipal: "img/productos/gohan enojado 3.jpg",
+    imagenSecundaria: "img/productos/gohan enojado.png",
     disponible: true
   },
   {
@@ -85,7 +90,8 @@ const PRODUCTOS = [
     descripcion: "Póster estilo manga japonés del Pokémon Haunter. Diseño retro con tipografía bold y paleta violeta y rosa.",
     categoria: "otros",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/hunter.jpg",
+    imagenPrincipal: "img/productos/hunter 3.jpg",
+    imagenSecundaria: "img/productos/hunter.png",
     disponible: true
   },
   {
@@ -94,7 +100,8 @@ const PRODUCTOS = [
     descripcion: "Diseño editorial minimalista de Michael Jackson en traje blanco. Gran tipografía sobre fondo claro. Elegante.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/michael jackson blancoo.jpg",
+    imagenPrincipal: "img/productos/michael jackson blancoo 3.jpg",
+    imagenSecundaria: "img/productos/michael jackson blanco.jpg",
     disponible: true
   },
   {
@@ -103,7 +110,8 @@ const PRODUCTOS = [
     descripcion: "Póster de Michael Jackson estilo afiche clásico. Fondo rojo impactante con silueta icónica. King of Pop.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/michael rojoo.jpg",
+    imagenPrincipal: "img/productos/michael rojoo 3.jpg",
+    imagenSecundaria: "img/productos/michael rojo.jpg",
     disponible: true
   },
   {
@@ -112,7 +120,8 @@ const PRODUCTOS = [
     descripcion: "Homenaje a Luca Prodan y Sumo con estética rockera en rojo, blanco y negro.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/Luca Prodan.png",
+    imagenPrincipal: "img/productos/Luca Prodan 3.png",
+    imagenSecundaria: "img/productos/Luca Prodan.png",
     disponible: true
   },
   {
@@ -121,7 +130,8 @@ const PRODUCTOS = [
     descripcion: "Póster inspirado en DeBÍ TiRAR MáS FOToS, con composición fotográfica y paleta verde.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/Bad_Bunny_DeBi_Tirar_Mas_Fotos_3.png",
+    imagenPrincipal: "img/productos/Bad_Bunny_DeBi_Tirar_Mas_Fotos_3.png",
+    imagenSecundaria: "img/productos/Bad_Bunny_DeBi_Tirar_Mas_Fotos.png",
     disponible: true
   },
   {
@@ -130,7 +140,8 @@ const PRODUCTOS = [
     descripcion: "Lionel Messi en el campo de juego, frente a una tribuna celeste y blanca.",
     categoria: "deportes",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/messi tribuna 3.jpg",
+    imagenPrincipal: "img/productos/messi tribuna 3.jpg",
+    imagenSecundaria: "img/productos/messi tribuna 1.jpg",
     disponible: true
   },
   {
@@ -139,7 +150,67 @@ const PRODUCTOS = [
     descripcion: "Homenaje a Michael Jackson con estética de concierto y detalles dorados.",
     categoria: "cine-musica",
     variantes: [VARIANTES.plastico, VARIANTES.enchapado],
-    imagen: "img/productos/michael gold mockup.jpg",
+    imagenPrincipal: "img/productos/michael gold mockup 3.jpg",
+    disponible: true
+  },
+  {
+    id: 13,
+    nombre: "Kurt Cobain — Nirvana",
+    descripcion: "Homenaje a Kurt Cobain con un retrato en blanco y negro y el icónico símbolo de Nirvana.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/kurt 3.jpg",
+    imagenSecundaria: "img/productos/kurt.jpg",
+    disponible: true
+  },
+  {
+    id: 14,
+    nombre: "Lionel Messi — Copa del Mundo",
+    descripcion: "Lionel Messi celebrando junto a la Copa del Mundo, en una escena de festejo celeste y blanco.",
+    categoria: "deportes",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/Lionel_Messi_Copa_Del_Mundo_3.png",
+    imagenSecundaria: "img/productos/Lionel_Messi_Copa_Del_Mundo_1.png",
+    disponible: true
+  },
+  {
+    id: 15,
+    nombre: "Pink Floyd — Wish You Were Here",
+    descripcion: "Homenaje a Pink Floyd y al álbum Wish You Were Here, con una estética clásica y nostálgica.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/pink floyd 3.jpg",
+    imagenSecundaria: "img/productos/pink floyd 1.jpg",
+    disponible: true
+  },
+  {
+    id: 16,
+    nombre: "Patricio Rey y sus Redonditos de Ricota",
+    descripcion: "Póster dedicado a Patricio Rey y sus Redonditos de Ricota, con arte en blanco, negro y rojo.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/pr 3.jpg",
+    imagenSecundaria: "img/productos/pr1.jpg",
+    disponible: true
+  },
+  {
+    id: 17,
+    nombre: "Bad Bunny — Un Verano Sin Ti",
+    descripcion: "Póster inspirado en Un Verano Sin Ti, con colores vibrantes y una ilustración veraniega.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/Un Verano Sin Ti - Bad Bunny 3.jpg",
+    imagenSecundaria: "img/productos/Un Verano Sin Ti - Bad Bunny  1.jpg",
+    disponible: true
+  },
+  {
+    id: 18,
+    nombre: "Perón y Evita — La patria es el otro",
+    descripcion: "Lámina de Juan Domingo Perón y Eva Perón con los colores celeste y blanco y la frase «La patria es el otro».",
+    categoria: "politica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/productos/Peron_Evita_La_Patria_Es_El_Otro_3.jpg",
+    imagenSecundaria: "img/productos/Peron_Evita_La_Patria_Es_El_Otro_.jpg",
     disponible: true
   }
 ];

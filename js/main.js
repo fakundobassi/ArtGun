@@ -41,11 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const CATEGORIAS_LABELS = {
     'cine-musica': 'Música',
-    'otros':       'Anime & Pop Culture',
-    'deportes':    'Deportes'
+    'otros':       'Anime',
+    'deportes':    'Deportes',
+    'politica':    'Política'
   };
   const productoDialog = document.getElementById('productoDialog');
   const productoDialogImagen = document.getElementById('productoDialogImagen');
+  const productoDialogNavegacion = productoDialog.querySelectorAll('[data-navegar-imagen]');
   const productoDialogCategoria = document.getElementById('productoDialogCategoria');
   const productoDialogTitulo = document.getElementById('productoDialogTitulo');
   const productoDialogDescripcion = document.getElementById('productoDialogDescripcion');
@@ -122,15 +124,41 @@ document.addEventListener('DOMContentLoaded', () => {
     return `https://wa.me/5492345683912?text=${encodeURIComponent(mensaje)}`;
   }
 
+  function obtenerImagenesProducto(producto) {
+    return [producto.imagenPrincipal, producto.imagenSecundaria].filter(Boolean);
+  }
+
+  function actualizarImagenTarjeta(producto, tarjeta, indice) {
+    const imagenes = obtenerImagenesProducto(producto);
+    const indiceNormalizado = (indice + imagenes.length) % imagenes.length;
+    tarjeta.dataset.imagenSeleccionada = String(indiceNormalizado);
+    const imagen = tarjeta.querySelector('.producto-imagen-wrap img');
+    imagen.src = imagenes[indiceNormalizado];
+    imagen.alt = `${producto.nombre} — imagen ${indiceNormalizado + 1} de ${imagenes.length}`;
+  }
+
+  function actualizarImagenDialog(producto, indice) {
+    const imagenes = obtenerImagenesProducto(producto);
+    const indiceNormalizado = (indice + imagenes.length) % imagenes.length;
+    productoDialog.dataset.imagenSeleccionada = String(indiceNormalizado);
+    productoDialogImagen.src = imagenes[indiceNormalizado];
+    productoDialogImagen.alt = `${producto.nombre} — imagen ${indiceNormalizado + 1} de ${imagenes.length}`;
+    productoDialogNavegacion.forEach(boton => {
+      boton.hidden = imagenes.length < 2;
+    });
+  }
+
   function crearTarjetaProducto(producto) {
     const variantePrimaria = producto.variantes[0];
     const colorInicial = variantePrimaria.coloresMarco[0];
     const urlWA = crearUrlPedido(producto, variantePrimaria, colorInicial);
+    const imagenes = obtenerImagenesProducto(producto);
 
     return `
       <article
         class="producto-card fade-in"
         data-id="${producto.id}"
+        data-imagen-seleccionada="0"
         data-variante-seleccionada="0"
         data-color-seleccionado="${colorInicial}"
         tabindex="0"
@@ -141,10 +169,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="producto-imagen-wrap">
           <img
-            src="${producto.imagen}"
+            src="${producto.imagenPrincipal}"
             alt="${producto.nombre}"
             loading="lazy"
           >
+          <button
+            class="producto-imagen-flecha producto-imagen-flecha-anterior"
+            type="button"
+            data-navegar-imagen="-1"
+            aria-label="Ver imagen anterior de ${producto.nombre}"
+            ${imagenes.length < 2 ? 'hidden' : ''}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+          <button
+            class="producto-imagen-flecha producto-imagen-flecha-siguiente"
+            type="button"
+            data-navegar-imagen="1"
+            aria-label="Ver imagen siguiente de ${producto.nombre}"
+            ${imagenes.length < 2 ? 'hidden' : ''}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
           <span class="producto-badge">${CATEGORIAS_LABELS[producto.categoria] || producto.categoria}</span>
           <div class="producto-imagen-overlay">
             <div class="overlay-icon">
@@ -278,8 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
       overflow: document.body.style.overflow,
       scrollBehavior: document.documentElement.style.scrollBehavior
     };
-    productoDialogImagen.src = producto.imagen;
-    productoDialogImagen.alt = producto.nombre;
+    actualizarImagenDialog(producto, Number(tarjeta.dataset.imagenSeleccionada || 0));
     productoDialogCategoria.textContent = CATEGORIAS_LABELS[producto.categoria] || producto.categoria;
     productoDialogTitulo.textContent = producto.nombre;
     productoDialogDescripcion.textContent = producto.descripcion;
@@ -298,6 +347,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tarjeta) return;
 
     const producto = PRODUCTOS.find(item => String(item.id) === tarjeta.dataset.id);
+    const botonImagen = event.target.closest('[data-navegar-imagen]');
+    if (producto && botonImagen) {
+      const indice = Number(tarjeta.dataset.imagenSeleccionada || 0) + Number(botonImagen.dataset.navegarImagen);
+      actualizarImagenTarjeta(producto, tarjeta, indice);
+      event.stopPropagation();
+      return;
+    }
+
     const filaVariante = event.target.closest('.variante-item');
     const botonSeleccion = event.target.closest('[data-select-variant], [data-select-color]');
     if (producto && filaVariante) {
@@ -328,6 +385,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   productoDialogCerrar.addEventListener('click', () => productoDialog.close());
+  productoDialogNavegacion.forEach(boton => {
+    boton.addEventListener('click', () => {
+      const producto = PRODUCTOS.find(item => String(item.id) === tarjetaActiva.dataset.id);
+      const indice = Number(productoDialog.dataset.imagenSeleccionada || 0) + Number(boton.dataset.navegarImagen);
+      actualizarImagenDialog(producto, indice);
+      actualizarImagenTarjeta(producto, tarjetaActiva, indice);
+    });
+  });
   productoDialogVariantes.addEventListener('click', event => {
     const boton = event.target.closest('[data-select-variant], [data-select-color]');
     const fila = event.target.closest('.variante-item');

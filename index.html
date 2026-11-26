@@ -233,8 +233,9 @@
           <div class="filtros-wrap" role="group" aria-label="Filtrar por categoría">
             <button class="filtro-btn activo" data-categoria="todos" id="filtro-todos">Todos</button>
             <button class="filtro-btn" data-categoria="cine-musica" id="filtro-cine">Música</button>
-            <button class="filtro-btn" data-categoria="otros" id="filtro-otros">Anime &amp; Pop Culture</button>
+            <button class="filtro-btn" data-categoria="otros" id="filtro-otros">Anime</button>
             <button class="filtro-btn" data-categoria="deportes" id="filtro-deportes">Deportes</button>
+            <button class="filtro-btn" data-categoria="politica" id="filtro-politica">Política</button>
           </div>
 
         </div>
@@ -261,6 +262,28 @@
       </button>
       <div class="producto-dialog-imagen">
         <img id="productoDialogImagen" alt="">
+        <button
+          class="producto-imagen-flecha producto-imagen-flecha-anterior"
+          type="button"
+          data-navegar-imagen="-1"
+          aria-label="Ver imagen anterior"
+          hidden
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+        <button
+          class="producto-imagen-flecha producto-imagen-flecha-siguiente"
+          type="button"
+          data-navegar-imagen="1"
+          aria-label="Ver imagen siguiente"
+          hidden
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </button>
       </div>
       <div class="producto-dialog-contenido">
         <p class="producto-dialog-categoria" id="productoDialogCategoria"></p>
@@ -352,10 +375,10 @@
           <!-- Collage de imágenes -->
           <div class="marca-imagenes fade-in fade-in-delay-2" aria-hidden="true">
             <div class="marca-img-wrap">
-              <img src="img/productos/michael rojoo.jpg" alt="King of Pop — ARTGUN" loading="lazy">
+              <img src="img/productos/michael rojoo 3.jpg" alt="King of Pop — ARTGUN" loading="lazy">
             </div>
             <div class="marca-img-wrap">
-              <img src="img/productos/gohan enojado.jpg" alt="Gohan SSJ2 — ARTGUN" loading="lazy">
+              <img src="img/productos/gohan enojado 3.jpg" alt="Gohan SSJ2 — ARTGUN" loading="lazy">
             </div>
             <div class="marca-img-wrap">
               <img src="img/productos/Babasonicos_3.jpg" alt="Babasónicos — ARTGUN" loading="lazy">
@@ -527,7 +550,7 @@
           <h4>Categorías</h4>
           <ul class="footer-links">
             <li><a href="#catalogo" class="footer-link">Música</a></li>
-            <li><a href="#catalogo" class="footer-link">Anime &amp; Pop Culture</a></li>
+            <li><a href="#catalogo" class="footer-link">Anime</a></li>
             <li><a href="#catalogo" class="footer-link">Deportes</a></li>
           </ul>
         </div>
