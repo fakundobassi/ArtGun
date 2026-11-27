@@ -313,5 +313,45 @@ const PRODUCTOS = [
     imagenPrincipal: "img/optimizadas/productos/milei 3.webp",
     imagenSecundaria: "img/optimizadas/productos/milei 1.webp",
     disponible: true
+  },
+  {
+    id: 29,
+    nombre: "Babasónicos — Desde 1991",
+    descripcion: "Póster editorial de Babasónicos con estética grunge, desde 1991.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/optimizadas/productos/Babasonicos poster 3.webp",
+    imagenSecundaria: "img/optimizadas/productos/Babasonicos poster 1.webp",
+    disponible: true
+  },
+  {
+    id: 30,
+    nombre: "Estadio Monumental",
+    descripcion: "Ilustración editorial del Estadio Monumental, símbolo del fútbol argentino.",
+    categoria: "deportes",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/optimizadas/productos/Estadio Monumental 3.webp",
+    imagenSecundaria: "img/optimizadas/productos/Estadio Monumental.webp",
+    disponible: true
+  },
+  {
+    id: 31,
+    nombre: "Freddie Mercury — Queen",
+    descripcion: "Póster homenaje a Freddie Mercury y Queen, con una estética clásica del rock.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/optimizadas/productos/freddie mercury 3.webp",
+    imagenSecundaria: "img/optimizadas/productos/freddie mercury 1.webp",
+    disponible: true
+  },
+  {
+    id: 32,
+    nombre: "Nirvana",
+    descripcion: "Póster vintage de Nirvana con retrato de la banda y estética rock alternativo.",
+    categoria: "cine-musica",
+    variantes: [VARIANTES.plastico, VARIANTES.enchapado],
+    imagenPrincipal: "img/optimizadas/productos/nirvana 3.webp",
+    imagenSecundaria: "img/optimizadas/productos/nirvana 1.webp",
+    disponible: true
   }
 ];
